@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="cs" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morphic. // Next-Gen Looksmaxxing</title>
+    <!-- Tailwind CSS pro ultra moderní design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons pro čisté ikony -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #09090b;
+            color: #fafafa;
+        }
+        .glass {
+            background: rgba(18, 18, 22, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-12">
+
+    <!-- NAVIGACE -->
+    <nav class="sticky top-0 z-50 glass border-b border-zinc-800 px-6 py-4 flex justify-between items-between items-center">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-black text-sm">M</div>
+            <span class="text-xl font-bold tracking-wider bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">MORPHIC.</span>
+        </div>
+        <div class="flex gap-4 text-sm text-zinc-400">
+            <span class="text-cyan-400 font-medium">Dashboard</span>
+            <span class="hover:text-white cursor-pointer transition">Analytics</span>
+        </div>
+    </nav>
+
+    <!-- HLAVNÍ OBSAH -->
+    <main class="max-w-5xl mx-auto px-4 mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- VLEVO: AI SCANNER & MEWING -->
+        <div class="md:col-span-2 space-y-6">
+            
+            <!-- AI Face Scanner Box -->
+            <div class="glass rounded-2xl p-6 glow-cyan relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl"></div>
+                <h2 class="text-lg font-semibold flex items-center gap-2 mb-4">
+                    <i data-lucide="scan-face" class="text-cyan-400"></i> AI Facial Analysis
+                </h2>
+                
+                <div class="border-2 border-dashed border-zinc-800 rounded-xl p-8 text-center flex flex-col items-center justify-center min-h-[220px]" id="dropzone">
+                    <div id="scan-init">
+                        <i data-lucide="upload-cloud" class="w-10 h-10 text-zinc-500 mx-auto mb-3"></i>
+                        <p class="text-sm text-zinc-400 mb-2">Nahraj své selfie pro analýzu asymetrie a Hunter Eyes</p>
+                        <button onclick="startScan()" class="mt-2 bg-white text-black font-semibold text-xs px-4 py-2 rounded-lg hover:bg-zinc-200 transition">
+                            Vybrat fotku
+                        </button>
+                    </div>
+                    
+                    <!-- Animace skenování -->
+                    <div id="scan-loading" class="hidden w-full">
+                        <div class="w-full bg-zinc-800 h-1 rounded-full overflow-hidden relative">
+                            <div class="bg-cyan-500 h-full w-1/3 rounded-full absolute animate-[bounce_1.5s_infinite]"></div>
+                        </div>
+                        <p class="text-xs text-cyan-400 mt-4 tracking-widest uppercase animate-pulse">Analyzuji canthal tilt & jawline...</p>
+                    </div>
+
+                    <!-- Výsledky -->
+                    <div id="scan-result" class="hidden w-full text-left space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-zinc-400">Celkové Looksmax Skóre:</span>
+                            <span class="text-2xl font-bold text-cyan-400">8.2 / 10</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <div class="bg-zinc-900/50 p-3 rounded-lg border border-zinc-800">
+                                <span class="text-zinc-500 block">Canthal Tilt</span>
+                                <span class="text-emerald-400 font-medium">Positive (+2°)</span>
+                            </div>
+                            <div class="bg-zinc-900/50 p-3 rounded-lg border border-zinc-800">
+                                <span class="text-zinc-500 block">Jawline Angle</span>
+                                <span class="text-zinc-300 font-medium">115° (Optimal)</span>
+                            </div>
+                        </div>
+                        <button onclick="resetScan()" class="text-xs text-zinc-500 hover:text-white underline mt-2 block">Skenovat znovu</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mewing Coach -->
+            <div class="glass rounded-2xl p-6 grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                <div>
+                    <h2 class="text-lg font-semibold flex items-center gap-2 mb-1">
+                        <i data-lucide="zap" class="text-amber-400"></i> Mewing Session
+                    </h2>
+                    <p class="text-xs text-zinc-400 perfection mb-4">Drž jazyk na patře pro permanentní jawline upgrade.</p>
+                    <div class="text-3xl font-mono font-bold" id="timer-display">45:00</div>
+                </div>
+                <div class="flex sm:justify-end">
+                    <button id="btn-mew" onclick="toggleMewing()" class="w-full sm:w-auto bg-zinc-800 border border-zinc-700 hover:bg-zinc-700 text-white font-medium text-sm px-6 py-3 rounded-xl transition flex items-center justify-center gap-2">
+                        <i data-lucide="play" class="w-4 h-4"></i> Spustit Session
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- VPRAVO: DAILY ROUTINE & PROGRESS -->
+        <div class="space-y-6">
+            
+            <!-- Daily Maxxing Tasks -->
+            <div class="glass rounded-2xl p-6">
+                <h2 class="text-lg font-semibold flex items-center gap-2 mb-4">
+                    <i data-lucide="check-square" class="text-violet-400"></i> Daily Routine
+                </h2>
+                <div class="space-y-3" id="routine-list">
+                    <!-- Tasky se generují pomocí JS -->
+                </div>
+            </div>
+
+            <!-- Stats / Tier Status -->
+            <div class="glass rounded-2xl p-6 bg-gradient-to-b from-zinc-900/50 to-transparent">
+                <span class="text-xs font-bold uppercase tracking-wider text-zinc-500">Tvůj Aktuální Status</span>
+                <div class="text-2xl font-black text-white mt-1 mb-2 tracking-wide">CHAD TIER</div>
+                <div class="w-full bg-zinc-800 h-2 rounded-full overflow-hidden">
+                    <div class="bg-gradient-to-r from-violet-500 to-cyan-400 h-full w-[78%]"></div>
+                </div>
+                <div class="flex justify-between items-center mt-2 text-[11px] text-zinc-400">
+                    <span>7,800 XP</span>
+                    <span>10,000 XP do GigaChad</span>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- LOGIKA APLIKACE (JAVASCRIPT) -->
+    <script>
+        // Inicializace ikon
+        lucide.createIcons();
+
+        // 1. DATA PRO DAILY ROUTINE
+        const tasks = [
+            { id: 1, text: "Skincare rutina (Čištění + Hydratace)", done: true },
+            { id: 2, text: "Gua Sha / Masáž obličeje", done: false },
+            { id: 3, text: "Gym session (Heavy lifting)", done: false },
+            { id: 4, text: "Vypít 3.5L vody", done: true },
+            { id: 5, text: "8 hodin spánku", done: false }
+        ];
+
+        function renderRoutine() {
+            const list = document.getElementById('routine-list');
+            list.innerHTML = '';
+            tasks.forEach(task => {
+                list.innerHTML += `
+                    <div onclick="toggleTask(${task.id})" class="flex items-center gap-3 p-3 rounded-xl bg-zinc-900/40 border border-zinc-800/60 hover:border-zinc-700 cursor-pointer transition">
+                        <div class="w-5 h-5 rounded-md border ${task.done ? 'bg-violet-500 border-violet-500' : 'border-zinc-700'} flex items-center justify-center transition">
+                            ${task.done ? '<i data-lucide="check" class="w-3 h-3 text-black stroke-[3]"></i>' : ''}
+                        </div>
+                        <span class="text-sm ${task.done ? 'line-through text-zinc-500' : 'text-zinc-300'}">${task.text}</span>
+                    </div>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        function toggleTask(id) {
+            const task = tasks.find(t => t.id === id);
+            if(task) task.done = !task.done;
+            renderRoutine();
+        }
+
+        // 2. SIMULÁTOR SKENOVÁNÍ OBLIČEJE
+        function startScan() {
+            document.getElementById('scan-init').classList.add('hidden');
+            document.getElementById('scan-loading').classList.remove('hidden');
+            
+            setTimeout(() => {
+                document.getElementById('scan-loading').classList.add('hidden');
+                document.getElementById('scan-result').classList.remove('hidden');
+            }, 3000); // 3 vteřiny fake skenování
+        }
+
+        function resetScan() {
+            document.getElementById('scan-result').classList.add('hidden');
+            document.getElementById('scan-init').classList.remove('hidden');
+        }
+
+        // 3. MEWING ČASOVAČ
+        let mewing = false;
+        let interval;
+        let timeLeft = 45 * 60;
+
+        function toggleMewing() {
+            const btn = document.getElementById('btn-mew');
+            mewing = !mewing;
+            
+            if(mewing) {
+                btn.innerHTML = `<i data-lucide="pause" class="w-4 h-4"></i> Pauza`;
+                btn.classList.replace('bg-zinc-800', 'bg-cyan-600');
+                interval = setInterval(() => {
+                    timeLeft--;
+                    updateTimerDisplay();
+                    if(timeLeft <= 0) clearInterval(interval);
+                }, 1000);
+            } else {
+                btn.innerHTML = `<i data-lucide="play" class="w-4 h-4"></i> Spustit Session`;
+                btn.classList.replace('bg-cyan-600', 'bg-zinc-800');
+                clearInterval(interval);
+            }
+            lucide.createIcons();
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer-display').innerText = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Spuštění na startu
+        renderRoutine();
+    </script>
+</body>
+</html>
