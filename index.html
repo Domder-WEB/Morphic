@@ -1,1022 +1,256 @@
-
-Gemini
-Nový chat
-Hledat v chatech
-Videa
-Knihovna
-Nový sešit
-Vytvoření Moderní Aplikace Morphic
-Webová stránka pro výdělek online
-100 Nápadů na Pasivní Příjem Online
-AI Brainrot Video Generation Request
-Generovanie Videa S Červeným Kolesom
-Výměna kola za Santa Cruz V10
-Výměna kola za Santa Cruz V10
-Chyba v popisu kavárny Demaris
-Jak najít klienty na redesign webu
-muzes mi najit prosim nejake firmy co maji horsi webovky nebo starsi abych jim mohl napsat
-Tvorba AI videí s Google Veo
-Nabídka na vytvoření CS:GO videa
-
-Aktivita
-Třebíč 1, Česko
-Z vaší IP adresy
-Aktualizovat polohu
-Konverzace s Gemini
-vytvor mi prosim aplikaci na looksmax aby vypadala moderne extra moderne atd dej tam vse co si myslis ze to potrebuje a vymysli nazev prosim jen mi dej scripty a ja je dam jen do git hubu
-
-Tohle je skvělý nápad. Aplikace na "looksmaxxing" (sebezlepšování, péče o vzhled, fitness a styl) musí vypadat absolutně top-tier, čistě, minimalisticky a "cyber-vibe" (temný režim, neonové akcenty, skleněný efekt / glassmorphism), aby oslovila cílovou skupinu.
-
-Nazveme ji GlowUp OS nebo Morphic. – pojďme do Morphic., to zní ultra moderně a technologicky.
-
-Abys to mohl rovnou hodit na GitHub, vytvoříme Single-Page Application (SPA) pomocí HTML, Tailwind CSS (pro ten extra moderní vzhled) a JavaScriptu. Všechno bude v jednom souboru, takže to stačí pojmenovat jako index.html a nahrát do GitHub repozitáře (a přes GitHub Pages to můžeš rovnou zdarma spustit!).
-
-Co aplikace obsahuje:
-AI Face Scanner (Simulátor): Modul, který "analyzuje" obličej (skenování animace) a vyplivne skóre + doporučení.
-
-Mewing Tracker: Interaktivní časovač a sledovač správné polohy jazyka/čelisti.
-
-Routine Builder: Seznam úkolů pro denní looksmaxxing (skincare, gym, voda, spánek).
-
-Progress Tracker: Grafické znázornění pokroku.
-
-Soubor: index.html
-Vytvoř si na počítači soubor index.html, vlož do něj následující kód a ulož ho. Pak ho nahraj na GitHub.
-
-HTML
 <!DOCTYPE html>
-<html lang="cs" class="dark">
+<html lang="cs">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Morphic. // Next-Gen Looksmaxxing</title>
-    <!-- Tailwind CSS pro ultra moderní design -->
+    <title>Morfake</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons pro čisté ikony -->
     <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #09090b;
-            color: #fafafa;
+        body{
+            background:#09090b;
+            color:white;
+            font-family:Inter,sans-serif;
         }
-        .glass {
-            background: rgba(18, 18, 22, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+
+        .tab{
+            display:none;
         }
-        .glow-cyan {
-            box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+
+        .tab.active{
+            display:block;
         }
     </style>
 </head>
-<body class="min-h-screen pb-12">
+<body>
 
-    <!-- NAVIGACE -->
-    <nav class="sticky top-0 z-50 glass border-b border-zinc-800 px-6 py-4 flex justify-between items-between items-center">
-        <div class="flex items-center gap-2">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-black text-sm">M</div>
-            <span class="text-xl font-bold tracking-wider bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">MORPHIC.</span>
-        </div>
-        <div class="flex gap-4 text-sm text-zinc-400">
-            <span class="text-cyan-400 font-medium">Dashboard</span>
-            <span class="hover:text-white cursor-pointer transition">Analytics</span>
-        </div>
-    </nav>
+<!-- NAVBAR -->
 
-    <!-- HLAVNÍ OBSAH -->
-    <main class="max-w-5xl mx-auto px-4 mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-        <!-- VLEVO: AI SCANNER & MEWING -->
-        <div class="md:col-span-2 space-y-6">
-            
-            <!-- AI Face Scanner Box -->
-            <div class="glass rounded-2xl p-6 glow-cyan relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl"></div>
-                <h2 class="text-lg font-semibold flex items-center gap-2 mb-4">
-                    <i data-lucide="scan-face" class="text-cyan-400"></i> AI Facial Analysis
-                </h2>
-                
-                <div class="border-2 border-dashed border-zinc-800 rounded-xl p-8 text-center flex flex-col items-center justify-center min-h-[220px]" id="dropzone">
-                    <div id="scan-init">
-                        <i data-lucide="upload-cloud" class="w-10 h-10 text-zinc-500 mx-auto mb-3"></i>
-                        <p class="text-sm text-zinc-400 mb-2">Nahraj své selfie pro analýzu asymetrie a Hunter Eyes</p>
-                        <button onclick="startScan()" class="mt-2 bg-white text-black font-semibold text-xs px-4 py-2 rounded-lg hover:bg-zinc-200 transition">
-                            Vybrat fotku
-                        </button>
-                    </div>
-                    
-                    <!-- Animace skenování -->
-                    <div id="scan-loading" class="hidden w-full">
-                        <div class="w-full bg-zinc-800 h-1 rounded-full overflow-hidden relative">
-                            <div class="bg-cyan-500 h-full w-1/3 rounded-full absolute animate-[bounce_1.5s_infinite]"></div>
-                        </div>
-                        <p class="text-xs text-cyan-400 mt-4 tracking-widest uppercase animate-pulse">Analyzuji canthal tilt & jawline...</p>
-                    </div>
+<header class="fixed top-0 left-0 right-0 bg-zinc-950 border-b border-zinc-800 z-50">
 
-                    <!-- Výsledky -->
-                    <div id="scan-result" class="hidden w-full text-left space-y-4">
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-zinc-400">Celkové Looksmax Skóre:</span>
-                            <span class="text-2xl font-bold text-cyan-400">8.2 / 10</span>
-                        </div>
-                        <div class="grid grid-cols-2 gap-3 text-xs">
-                            <div class="bg-zinc-900/50 p-3 rounded-lg border border-zinc-800">
-                                <span class="text-zinc-500 block">Canthal Tilt</span>
-                                <span class="text-emerald-400 font-medium">Positive (+2°)</span>
-                            </div>
-                            <div class="bg-zinc-900/50 p-3 rounded-lg border border-zinc-800">
-                                <span class="text-zinc-500 block">Jawline Angle</span>
-                                <span class="text-zinc-300 font-medium">115° (Optimal)</span>
-                            </div>
-                        </div>
-                        <button onclick="resetScan()" class="text-xs text-zinc-500 hover:text-white underline mt-2 block">Skenovat znovu</button>
-                    </div>
-                </div>
-            </div>
+    <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
 
-            <!-- Mewing Coach -->
-            <div class="glass rounded-2xl p-6 grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
-                <div>
-                    <h2 class="text-lg font-semibold flex items-center gap-2 mb-1">
-                        <i data-lucide="zap" class="text-amber-400"></i> Mewing Session
-                    </h2>
-                    <p class="text-xs text-zinc-400 perfection mb-4">Drž jazyk na patře pro permanentní jawline upgrade.</p>
-                    <div class="text-3xl font-mono font-bold" id="timer-display">45:00</div>
-                </div>
-                <div class="flex sm:justify-end">
-                    <button id="btn-mew" onclick="toggleMewing()" class="w-full sm:w-auto bg-zinc-800 border border-zinc-700 hover:bg-zinc-700 text-white font-medium text-sm px-6 py-3 rounded-xl transition flex items-center justify-center gap-2">
-                        <i data-lucide="play" class="w-4 h-4"></i> Spustit Session
-                    </button>
-                </div>
-            </div>
+        <h1 class="text-3xl font-bold text-cyan-400">
+            MORFAKE
+        </h1>
 
-        </div>
+        <nav class="flex gap-2">
 
-        <!-- VPRAVO: DAILY ROUTINE & PROGRESS -->
-        <div class="space-y-6">
-            
-            <!-- Daily Maxxing Tasks -->
-            <div class="glass rounded-2xl p-6">
-                <h2 class="text-lg font-semibold flex items-center gap-2 mb-4">
-                    <i data-lucide="check-square" class="text-violet-400"></i> Daily Routine
-                </h2>
-                <div class="space-y-3" id="routine-list">
-                    <!-- Tasky se generují pomocí JS -->
-                </div>
-            </div>
-
-            <!-- Stats / Tier Status -->
-            <div class="glass rounded-2xl p-6 bg-gradient-to-b from-zinc-900/50 to-transparent">
-                <span class="text-xs font-bold uppercase tracking-wider text-zinc-500">Tvůj Aktuální Status</span>
-                <div class="text-2xl font-black text-white mt-1 mb-2 tracking-wide">CHAD TIER</div>
-                <div class="w-full bg-zinc-800 h-2 rounded-full overflow-hidden">
-                    <div class="bg-gradient-to-r from-violet-500 to-cyan-400 h-full w-[78%]"></div>
-                </div>
-                <div class="flex justify-between items-center mt-2 text-[11px] text-zinc-400">
-                    <span>7,800 XP</span>
-                    <span>10,000 XP do GigaChad</span>
-                </div>
-            </div>
-
-        </div>
-
-    </main>
-
-    <!-- LOGIKA APLIKACE (JAVASCRIPT) -->
-    <script>
-        // Inicializace ikon
-        lucide.createIcons();
-
-        // 1. DATA PRO DAILY ROUTINE
-        const tasks = [
-            { id: 1, text: "Skincare rutina (Čištění + Hydratace)", done: true },
-            { id: 2, text: "Gua Sha / Masáž obličeje", done: false },
-            { id: 3, text: "Gym session (Heavy lifting)", done: false },
-            { id: 4, text: "Vypít 3.5L vody", done: true },
-            { id: 5, text: "8 hodin spánku", done: false }
-        ];
-
-        function renderRoutine() {
-            const list = document.getElementById('routine-list');
-            list.innerHTML = '';
-            tasks.forEach(task => {
-                list.innerHTML += `
-                    <div onclick="toggleTask(${task.id})" class="flex items-center gap-3 p-3 rounded-xl bg-zinc-900/40 border border-zinc-800/60 hover:border-zinc-700 cursor-pointer transition">
-                        <div class="w-5 h-5 rounded-md border ${task.done ? 'bg-violet-500 border-violet-500' : 'border-zinc-700'} flex items-center justify-center transition">
-                            ${task.done ? '<i data-lucide="check" class="w-3 h-3 text-black stroke-[3]"></i>' : ''}
-                        </div>
-                        <span class="text-sm ${task.done ? 'line-through text-zinc-500' : 'text-zinc-300'}">${task.text}</span>
-                    </div>
-                `;
-            });
-            lucide.createIcons();
-        }
-
-        function toggleTask(id) {
-            const task = tasks.find(t => t.id === id);
-            if(task) task.done = !task.done;
-            renderRoutine();
-        }
-
-        // 2. SIMULÁTOR SKENOVÁNÍ OBLIČEJE
-        function startScan() {
-            document.getElementById('scan-init').classList.add('hidden');
-            document.getElementById('scan-loading').classList.remove('hidden');
-            
-            setTimeout(() => {
-                document.getElementById('scan-loading').classList.add('hidden');
-                document.getElementById('scan-result').classList.remove('hidden');
-            }, 3000); // 3 vteřiny fake skenování
-        }
-
-        function resetScan() {
-            document.getElementById('scan-result').classList.add('hidden');
-            document.getElementById('scan-init').classList.remove('hidden');
-        }
-
-        // 3. MEWING ČASOVAČ
-        let mewing = false;
-        let interval;
-        let timeLeft = 45 * 60;
-
-        function toggleMewing() {
-            const btn = document.getElementById('btn-mew');
-            mewing = !mewing;
-            
-            if(mewing) {
-                btn.innerHTML = `<i data-lucide="pause" class="w-4 h-4"></i> Pauza`;
-                btn.classList.replace('bg-zinc-800', 'bg-cyan-600');
-                interval = setInterval(() => {
-                    timeLeft--;
-                    updateTimerDisplay();
-                    if(timeLeft <= 0) clearInterval(interval);
-                }, 1000);
-            } else {
-                btn.innerHTML = `<i data-lucide="play" class="w-4 h-4"></i> Spustit Session`;
-                btn.classList.replace('bg-cyan-600', 'bg-zinc-800');
-                clearInterval(interval);
-            }
-            lucide.createIcons();
-        }
-
-        function updateTimerDisplay() {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            document.getElementById('timer-display').innerText = 
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        // Spuštění na startu
-        renderRoutine();
-    </script>
-</body>
-</html>
-Jak to hodit na GitHub:
-Vytvoř si na GitHubu nové repozitář s názvem morphic (nebo jakýmkoliv jiným).
-
-Nahraj do něj tento soubor pojmenovaný přesně index.html.
-
-Běž do repozitáře do Settings -> Pages.
-
-V sekci Build and deployment nastav Source na Deploy from a branch a vyber main (nebo master) větev a složku /root.
-
-Klikni na Save. Během minuty ti GitHub vygeneruje odkaz (např. tvojejmeno.github.io/morphic), kde aplikace živě poběží a můžeš ji hned zkoušet na mobilu i PC.
-
-udělej to aplikaci jako že úvodní stranou více rozsáhlou a aby v tom nevypadá, tak divně prostě úplně nejvíc rozsáhlou aplikaci a dej tam ty záložky, aby to vypadalo lépe.
-
-Aplikace byla kompletně přepracována do masivního, maximálně rozsáhlého rozhraní s pokročilou strukturou záložek (tabů) a špičkovým "cyberpunk / ultra-minimalistic" designem.
-
-Kód je kompletně připraven jako ucelená Single-Page aplikace (SPA) v jednom souboru, takže ho stačí nahrát přímo na tvůj GitHub.
-
-Co je v této verzi nové a proč nevypadá divně:
-Pokročilý Tabovací Systém (Záložky): Navigační lišta v záhlaví plynule přepíná mezi sekcemi bez načítání stránky (Úvodní přehled, AI analýza obličeje, Rutiny, Suplementace a Globální žebříček).
-
-Masivní Úvodní Strana (Dashboard): Obsahuje velký, čistý uvítací Hero banner s gradienty, přehledné statistické karty indexů (Facial Symmetry, Lean Body Mass, Mewing Streak) a rychlý náhled denních úkolů s mini-časovačem.
-
-Plnohodnotný AI Scanner (Simulátor): V záložce biometrie provází uživatele postupným skenováním (animace) a následně rozbalí hlubokou tabulku výsledků (Canthal Tilt, Mandibulární úhel, FWHR index) včetně personalizovaných rad.
-
-Rozsáhlý Správce Rutin & Tracker Vody: Dedikované sekce pro interaktivní odškrtávání úkolů (s kategoriemi) a grafický sledovač pitného režimu.
-
-Globální Komunitní Žebříček: Gamifikační prvek (Leaderboard), kde uživatel vidí své umístění, nasbírané XP a porovnává se s top profily (GigaChad tier atd.).
-
-Soubor k uložení na tvůj GitHub
-Zdrojový kód aplikace najdeš v níže vygenerovaném souboru. Stačí ho pojmenovat jako index.html a nahrát do svého repozitáře.
-Ikona aplikace HTML
-index
- HTML 
-Otevřít
-
-Postup pro spuštění na GitHub Pages zdarma:
-Vytvoř si na GitHubu repozitář (např. s názvem morphic-app).
-
-Nahraj do něj tento vygenerovaný soubor s názvem index.html.
-
-V nastavení repozitáře (Settings) přejdi v levém menu do sekce Pages.
-
-U položky Build and deployment -> Source zvol Deploy from a branch.
-
-Vyber větev main (případně master) a klikni na Save.
-
-Během minuty ti GitHub vygeneruje živou URL adresu, na které tvoje aplikace poběží a můžeš ji hned sdílet nebo zkoušet na mobilu!
-
-
-
-
-Gemini je AI a může dělat chyby (i co se týče lidí). Vaše soukromí a GeminiOtevře se v novém okně
-
-<!DOCTYPE html>
-<html lang="cs" class="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MORPHIC. // Next-Gen Self-Architecture Ecosystem</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap');
-        
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #030303;
-            color: #f4f4f5;
-            overflow-x: hidden;
-        }
-        .font-display {
-            font-family: 'Space Grotesk', sans-serif;
-        }
-        .glass-panel {
-            background: rgba(9, 9, 11, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-        .glass-panel:hover {
-            border: 1px solid rgba(6, 182, 212, 0.15);
-        }
-        .glow-cyan {
-            box-shadow: 0 0 40px rgba(6, 182, 212, 0.07);
-        }
-        .glow-violet {
-            box-shadow: 0 0 40px rgba(139, 92, 246, 0.07);
-        }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #030303;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #27272a;
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #3f3f46;
-        }
-    </style>
-</head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
-
-    <!-- TOP GLOW EFFECTS -->
-    <div class="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
-    <div class="absolute top-1/3 right-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-[120px] pointer-events-none"></div>
-
-    <!-- HEADER / NAVIGATION -->
-    <header class="sticky top-0 z-50 glass-panel border-b border-zinc-900 px-6 py-4 flex justify-between items-center transition-all duration-300">
-        <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-400 via-blue-500 to-violet-600 flex items-center justify-center font-display font-bold text-black text-base shadow-[0_0_20px_rgba(6,182,212,0.3)]">
-                M
-            </div>
-            <div>
-                <span class="text-lg font-black tracking-widest font-display bg-gradient-to-r from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent">MORPHIC.</span>
-                <span class="text-[9px] block tracking-[0.2em] uppercase text-cyan-400 font-bold -mt-1">Self-Architecture v2.0</span>
-            </div>
-        </div>
-
-        <!-- TABS / NAVIGATION LINKS -->
-        <nav class="hidden md:flex items-center gap-1 bg-zinc-900/60 p-1 rounded-xl border border-zinc-800/80">
-            <button onclick="switchTab('home')" id="tab-home" class="tab-btn px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all duration-200 bg-cyan-500 text-black shadow-lg shadow-cyan-500/10">
-                <span class="flex items-center gap-2"><i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i> Úvodní Přehled</span>
+            <button onclick="openTab('home')" class="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-cyan-500 hover:text-black transition">
+                Domů
             </button>
-            <button onclick="switchTab('biometrics')" id="tab-biometrics" class="tab-btn px-4 py-2 rounded-lg text-xs font-semibold tracking-wide text-zinc-400 hover:text-white transition-all duration-200">
-                <span class="flex items-center gap-2"><i data-lucide="scan-face" class="w-3.5 h-3.5"></i> AI Obličej & Kostra</span>
+
+            <button onclick="openTab('dashboard')" class="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-cyan-500 hover:text-black transition">
+                Dashboard
             </button>
-            <button onclick="switchTab('routine')" id="tab-routine" class="tab-btn px-4 py-2 rounded-lg text-xs font-semibold tracking-wide text-zinc-400 hover:text-white transition-all duration-200">
-                <span class="flex items-center gap-2"><i data-lucide="sliders" class="w-3.5 h-3.5"></i> Protokoly & Rutiny</span>
+
+            <button onclick="openTab('analysis')" class="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-cyan-500 hover:text-black transition">
+                AI Analýza
             </button>
-            <button onclick="switchTab('nutrition')" id="tab-nutrition" class="tab-btn px-4 py-2 rounded-lg text-xs font-semibold tracking-wide text-zinc-400 hover:text-white transition-all duration-200">
-                <span class="flex items-center gap-2"><i data-lucide="droplet" class="w-3.5 h-3.5"></i> Suplementace & Voda</span>
+
+            <button onclick="openTab('tasks')" class="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-cyan-500 hover:text-black transition">
+                Úkoly
             </button>
-            <button onclick="switchTab('leaderboard')" id="tab-leaderboard" class="tab-btn px-4 py-2 rounded-lg text-xs font-semibold tracking-wide text-zinc-400 hover:text-white transition-all duration-200">
-                <span class="flex items-center gap-2"><i data-lucide="trophy" class="w-3.5 h-3.5"></i> Globální Žebříček</span>
+
+            <button onclick="openTab('stats')" class="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-cyan-500 hover:text-black transition">
+                Statistiky
             </button>
+
+            <button onclick="openTab('profile')" class="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-cyan-500 hover:text-black transition">
+                Profil
+            </button>
+
         </nav>
 
-        <!-- USER CHAD STATUS BADGE -->
-        <div class="flex items-center gap-3">
-            <div class="text-right hidden sm:block">
-                <span class="text-[10px] uppercase font-bold text-zinc-500 tracking-wider block">Úroveň profilu</span>
-                <span class="text-xs font-extrabold text-violet-400 tracking-wide">Elite Chad Tier</span>
-            </div>
-            <div class="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center font-bold text-sm text-zinc-300 relative">
-                <div class="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-[#030303]"></div>
-                <i data-lucide="user" class="w-4 h-4"></i>
-            </div>
+    </div>
+
+</header>
+
+<div class="h-24"></div>
+
+<!-- HOME -->
+
+<section id="home" class="tab active max-w-7xl mx-auto p-8">
+
+    <div class="rounded-3xl bg-gradient-to-r from-cyan-600 to-blue-700 p-10">
+
+        <h2 class="text-5xl font-bold mb-5">
+            Vítej v Morfake
+        </h2>
+
+        <p class="text-lg text-white/80 max-w-2xl">
+            Moderní aplikace pro sledování pokroku, každodenních návyků,
+            AI analýzu, statistiky a osobní rozvoj.
+        </p>
+
+        <div class="mt-8 flex gap-4">
+
+            <button onclick="openTab('analysis')"
+                class="bg-white text-black px-6 py-3 rounded-xl font-bold">
+                Začít analýzu
+            </button>
+
+            <button onclick="openTab('dashboard')"
+                class="border border-white px-6 py-3 rounded-xl">
+                Otevřít dashboard
+            </button>
+
         </div>
-    </header>
 
-    <!-- MAIN CONTAINER -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8">
-        
-        <!-- SECTION 1: HOME / DASHBOARD -->
-        <section id="content-home" class="tab-content space-y-8 animate-fadeIn">
-            <!-- HERO BANNER -->
-            <div class="glass-panel rounded-3xl p-8 overflow-hidden relative border border-zinc-800/80 bg-gradient-to-br from-zinc-900/40 via-zinc-950/20 to-transparent">
-                <div class="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-cyan-500/10 to-violet-500/10 rounded-full blur-3xl pointer-events-none"></div>
-                
-                <div class="max-w-2xl">
-                    <span class="text-[11px] font-bold uppercase tracking-[0.25em] text-cyan-400 px-2.5 py-1 bg-cyan-950/50 rounded-full border border-cyan-800/30">Vítej v ekosystému budoucnosti</span>
-                    <h1 class="text-3xl sm:text-4xl font-black font-display tracking-tight text-white mt-4 mb-3">
-                        Optimalizuj svůj genetický potenciál na <span class="bg-gradient-to-r from-cyan-400 via-blue-400 to-violet-500 bg-clip-text text-transparent">Maximum.</span>
-                    </h1>
-                    <p class="text-zinc-400 text-sm leading-relaxed max-w-xl">
-                        Morphic není jen tracker. Je to tvůj osobní digitální architekt vzhledu, posture, fitness a mentální dominance. Sleduj data, plň protokoly, překonávej limity.
-                    </p>
-                    <div class="flex flex-wrap gap-4 mt-6">
-                        <button onclick="switchTab('biometrics')" class="bg-white text-black font-bold text-xs px-5 py-3 rounded-xl hover:bg-zinc-200 transition duration-300 flex items-center gap-2 shadow-lg shadow-white/5">
-                            <i data-lucide="scan" class="w-4 h-4"></i> Spustit Biometrickou Analýzu
-                        </button>
-                        <div class="flex items-center gap-2 text-xs text-zinc-400 bg-zinc-900/80 px-4 py-3 rounded-xl border border-zinc-800">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                            Dnes synchronizováno s Morphic AI Engine v2.0
-                        </div>
-                    </div>
-                </div>
+    </div>
+
+</section>
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="tab max-w-7xl mx-auto p-8">
+
+    <h2 class="text-4xl font-bold mb-8">
+        Dashboard
+    </h2>
+
+    <div class="grid md:grid-cols-4 gap-5">
+
+        <div class="bg-zinc-900 p-6 rounded-2xl">
+            <h3 class="text-zinc-400">XP</h3>
+            <div class="text-4xl font-bold mt-3">7420</div>
+        </div>
+
+        <div class="bg-zinc-900 p-6 rounded-2xl">
+            <h3 class="text-zinc-400">Denní skóre</h3>
+            <div class="text-4xl font-bold mt-3">92%</div>
+        </div>
+
+        <div class="bg-zinc-900 p-6 rounded-2xl">
+            <h3 class="text-zinc-400">Hydratace</h3>
+            <div class="text-4xl font-bold mt-3">2.8L</div>
+        </div>
+
+        <div class="bg-zinc-900 p-6 rounded-2xl">
+            <h3 class="text-zinc-400">Streak</h3>
+            <div class="text-4xl font-bold mt-3">18 dní</div>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- AI -->
+
+<section id="analysis" class="tab max-w-7xl mx-auto p-8">
+
+    <h2 class="text-4xl font-bold mb-6">
+        AI Analýza
+    </h2>
+
+    <div class="border-2 border-dashed border-zinc-700 rounded-3xl p-20 text-center">
+
+        <p class="text-xl mb-6">
+            Přetáhni sem fotografii
+        </p>
+
+        <button class="bg-cyan-500 text-black px-6 py-3 rounded-xl font-bold">
+            Vybrat soubor
+        </button>
+
+    </div>
+
+</section>
+
+<!-- TASKS -->
+
+<section id="tasks" class="tab max-w-7xl mx-auto p-8">
+
+    <h2 class="text-4xl font-bold mb-6">
+        Denní úkoly
+    </h2>
+
+    <div class="space-y-4">
+
+        <div class="bg-zinc-900 rounded-xl p-5 flex justify-between">
+            <span>Vypít 3 litry vody</span>
+            <input type="checkbox">
+        </div>
+
+        <div class="bg-zinc-900 rounded-xl p-5 flex justify-between">
+            <span>Silový trénink</span>
+            <input type="checkbox">
+        </div>
+
+        <div class="bg-zinc-900 rounded-xl p-5 flex justify-between">
+            <span>Spánek 8 hodin</span>
+            <input type="checkbox">
+        </div>
+
+    </div>
+
+</section>
+
+<!-- STATS -->
+
+<section id="stats" class="tab max-w-7xl mx-auto p-8">
+
+    <h2 class="text-4xl font-bold mb-6">
+        Statistiky
+    </h2>
+
+    <div class="bg-zinc-900 rounded-3xl h-96 flex items-center justify-center text-zinc-500">
+        Zde může být graf pokroku
+    </div>
+
+</section>
+
+<!-- PROFILE -->
+
+<section id="profile" class="tab max-w-7xl mx-auto p-8">
+
+    <div class="bg-zinc-900 rounded-3xl p-8 max-w-xl">
+
+        <div class="w-24 h-24 rounded-full bg-cyan-500 mb-5"></div>
+
+        <h2 class="text-3xl font-bold">
+            Uživatel
+        </h2>
+
+        <p class="text-zinc-400 mt-2">
+            Level 18 • Elite
+        </p>
+
+        <div class="mt-8 grid grid-cols-2 gap-4">
+
+            <div class="bg-zinc-800 p-4 rounded-xl">
+                XP: 7420
             </div>
 
-            <!-- INDEXES METRICS GRID -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="glass-panel p-5 rounded-2xl glow-cyan">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Facial Symmetry Index</span>
-                        <span class="text-[10px] bg-cyan-500/10 text-cyan-400 font-bold px-2 py-0.5 rounded border border-cyan-500/20">+1.2% včera</span>
-                    </div>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-3xl font-bold font-display text-white">88.4%</span>
-                        <span class="text-xs text-zinc-400">/ 100%</span>
-                    </div>
-                    <div class="w-full bg-zinc-900 h-1 rounded-full mt-3 overflow-hidden">
-                        <div class="bg-cyan-500 h-full w-[88.4%] rounded-full"></div>
-                    </div>
-                </div>
-
-                <div class="glass-panel p-5 rounded-2xl glow-violet">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Lean Body Mass Est.</span>
-                        <span class="text-[10px] bg-violet-500/10 text-violet-400 font-bold px-2 py-0.5 rounded border border-violet-500/20">Cíl: 82 kg</span>
-                    </div>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-3xl font-bold font-display text-white">78.5 kg</span>
-                        <span class="text-xs text-zinc-400">Tuk: 11.2%</span>
-                    </div>
-                    <div class="w-full bg-zinc-900 h-1 rounded-full mt-3 overflow-hidden">
-                        <div class="bg-violet-500 h-full w-[78.5%] rounded-full"></div>
-                    </div>
-                </div>
-
-                <div class="glass-panel p-5 rounded-2xl">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Mewing Streak</span>
-                        <span class="text-[10px] bg-amber-500/10 text-amber-400 font-bold px-2 py-0.5 rounded border border-amber-500/20">Best: 24 dní</span>
-                    </div>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-3xl font-bold font-display text-white">14 dní</span>
-                        <span class="text-xs text-zinc-400">Konstituce: Perfektní</span>
-                    </div>
-                    <div class="w-full bg-zinc-900 h-1 rounded-full mt-3 overflow-hidden">
-                        <div class="bg-amber-500 h-full w-[65%] rounded-full"></div>
-                    </div>
-                </div>
-
-                <div class="glass-panel p-5 rounded-2xl">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Denní Skóre Maxxing</span>
-                        <span class="text-[10px] bg-emerald-500/10 text-emerald-500 font-bold px-2 py-0.5 rounded border border-emerald-500/20">3/5 Hotovo</span>
-                    </div>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-3xl font-bold font-display text-white">60%</span>
-                        <span class="text-xs text-zinc-400">XP získat: +400</span>
-                    </div>
-                    <div class="w-full bg-zinc-900 h-1 rounded-full mt-3 overflow-hidden">
-                        <div class="bg-emerald-500 h-full w-[60%] rounded-full"></div>
-                    </div>
-                </div>
+            <div class="bg-zinc-800 p-4 rounded-xl">
+                Achievementy: 12
             </div>
 
-            <!-- TWO COLUMN SUBSECTION -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Quick Tasks & Routine -->
-                <div class="lg:col-span-2 glass-panel rounded-2xl p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <div>
-                            <h3 class="text-lg font-bold font-display text-white flex items-center gap-2">
-                                <i data-lucide="check-square" class="text-cyan-400 w-5 h-5"></i> Dnešní Kritické Úkoly
-                            </h3>
-                            <p class="text-xs text-zinc-400 mt-1">Nenech své skóre propadnout dolů</p>
-                        </div>
-                        <button onclick="switchTab('routine')" class="text-xs font-semibold text-zinc-400 hover:text-white underline">Spravovat vše</button>
-                    </div>
-                    <div class="space-y-3" id="home-routine-preview">
-                        <!-- JS generated items -->
-                    </div>
-                </div>
+        </div>
 
-                <!-- Fast Analysis Box -->
-                <div class="glass-panel rounded-2xl p-6 flex flex-col justify-between bg-gradient-to-b from-zinc-900/30 to-transparent">
-                    <div>
-                        <h3 class="text-lg font-bold font-display text-white flex items-center gap-2 mb-2">
-                            <i data-lucide="zap" class="text-amber-400 w-5 h-5"></i> Rychlý Mewing Časovač
-                        </h3>
-                        <p class="text-xs text-zinc-400 leading-relaxed">
-                            Aktivuj permanentní polohu jazyka na patře pro předsazení spodní čelisti a zostření úhlu krku.
-                        </p>
-                        <div class="text-4xl font-mono font-black text-white my-6 tracking-wider text-center bg-zinc-950/80 py-4 rounded-xl border border-zinc-900" id="home-timer-display">
-                            45:00
-                        </div>
-                    </div>
-                    <button id="home-btn-mew" onclick="toggleMewingGlobal()" class="w-full bg-zinc-900 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-800/80 text-white font-bold text-xs py-3 rounded-xl transition duration-200 flex items-center justify-center gap-2">
-                        <i data-lucide="play" class="w-3.5 h-3.5 text-cyan-400"></i> Spustit Rychlou Session
-                    </button>
-                </div>
-            </div>
-        </section>
+    </div>
 
-        <!-- SECTION 2: BIOMETRICS & AI SCAN -->
-        <section id="content-biometrics" class="tab-content space-y-6 hidden animate-fadeIn">
-            <div class="glass-panel rounded-2xl p-6">
-                <div class="max-w-xl mb-6">
-                    <h2 class="text-xl font-bold font-display text-white flex items-center gap-2">
-                        <i data-lucide="scan-face" class="text-cyan-400"></i> Pokročilý AI Face & Feature Scanner
-                    </h2>
-                    <p class="text-xs text-zinc-400 mt-1">
-                        Nahraj fotografii zepředu (front profile) a z boku (side profile). Náš neuronový algoritmus vypočítá úhly, symetrii a zařadí tvé rysy do celosvětových antropologických tabulek.
-                    </p>
-                </div>
+</section>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Dropzone -->
-                    <div class="border-2 border-dashed border-zinc-800 hover:border-zinc-700 rounded-2xl p-8 text-center flex flex-col items-center justify-center min-h-[300px] transition-all bg-zinc-900/20" id="dropzone">
-                        <div id="scan-init" class="space-y-4">
-                            <div class="w-12 h-12 rounded-full bg-zinc-900 flex items-center justify-center border border-zinc-800 mx-auto">
-                                <i data-lucide="upload-cloud" class="w-5 h-5 text-zinc-400"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm font-semibold text-zinc-200">Přetáhni sem svou fotku nebo klikni</p>
-                                <p class="text-xs text-zinc-500 mt-1">Podporuje PNG, JPG (ideálně neutrální osvětlení)</p>
-                            </div>
-                            <button onclick="startScan()" class="bg-cyan-500 text-black font-bold text-xs px-4 py-2.5 rounded-xl hover:bg-cyan-400 transition shadow-lg shadow-cyan-500/10">
-                                Vybrat soubor pro analýzu
-                            </button>
-                        </div>
-                        
-                        <!-- Scanning Animation -->
-                        <div id="scan-loading" class="hidden w-full max-w-xs text-center space-y-4">
-                            <div class="relative w-24 h-24 mx-auto border-4 border-cyan-500/20 border-t-cyan-500 rounded-full animate-spin"></div>
-                            <div>
-                                <p class="text-sm font-bold text-white tracking-wide uppercase animate-pulse">Analyzuji body obličeje...</p>
-                                <p class="text-xs text-zinc-500 mt-1" id="scan-status-text">Detekce očních štěrbin (Canthal Tilt)...</p>
-                            </div>
-                        </div>
+<script>
 
-                        <!-- Results Dashboard -->
-                        <div id="scan-result" class="hidden w-full text-left space-y-4">
-                            <div class="flex justify-between items-center bg-zinc-900/60 p-4 rounded-xl border border-zinc-800">
-                                <span class="text-sm font-semibold text-zinc-300">Celkové Facial Hodnocení:</span>
-                                <span class="text-2xl font-black font-display text-cyan-400">8.45 / 10</span>
-                            </div>
-                            
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-900">
-                                    <span class="text-zinc-500 text-[10px] uppercase font-bold block">Canthal Tilt Angle</span>
-                                    <span class="text-emerald-400 font-bold text-sm flex items-center gap-1 mt-0.5">
-                                        Positive (+3.1°) <i data-lucide="trending-up" class="w-3.5 h-3.5"></i>
-                                    </span>
-                                    <p class="text-[11px] text-zinc-400 mt-1">Ideální sklon očních koutků (Hunter eyes vibe).</p>
-                                </div>
-                                <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-900">
-                                    <span class="text-zinc-500 text-[10px] uppercase font-bold block">Jawline Definition</span>
-                                    <span class="text-cyan-400 font-bold text-sm flex items-center gap-1 mt-0.5">
-                                        114.2° (Sharp)
-                                    </span>
-                                    <p class="text-[11px] text-zinc-400 mt-1">Vysoká ostrost mandibulárního úhlu.</p>
-                                </div>
-                                <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-900">
-                                    <span class="text-zinc-500 text-[10px] uppercase font-bold block">Symmetry Ratio</span>
-                                    <span class="text-zinc-300 font-bold text-sm flex items-center gap-1 mt-0.5">
-                                        91.4% Optimal
-                                    </span>
-                                    <p class="text-[11px] text-zinc-400 mt-1">Mírná asymetrie v levém nazolabiálním záhybu.</p>
-                                </div>
-                                <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-900">
-                                    <span class="text-zinc-500 text-[10px] uppercase font-bold block">Fwhr index</span>
-                                    <span class="text-violet-400 font-bold text-sm flex items-center gap-1 mt-0.5">
-                                        1.82 (Masculine)
-                                    </span>
-                                    <p class="text-[11px] text-zinc-400 mt-1">Poměr šířky ku výšce značí ideální dimorfismus.</p>
-                                </div>
-                            </div>
-                            <button onclick="resetScan()" class="text-xs text-zinc-500 hover:text-white underline mt-2 block mx-auto">Vymazat data a skenovat znovu</button>
-                        </div>
-                    </div>
+function openTab(id){
 
-                    <!-- AI Insights & Tips -->
-                    <div class="glass-panel rounded-2xl p-6 flex flex-col justify-between">
-                        <div class="space-y-4">
-                            <h3 class="text-sm font-bold uppercase tracking-wider text-zinc-400">Doporučená personalizovaná vylepšení</h3>
-                            <div class="space-y-3">
-                                <div class="flex gap-3 p-3 bg-zinc-900/40 rounded-xl border border-zinc-800">
-                                    <div class="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0 text-cyan-400 font-bold text-xs">1</div>
-                                    <div>
-                                        <h4 class="text-xs font-bold text-white">Snížit procento podkožního tuku na 10%</h4>
-                                        <p class="text-[11px] text-zinc-400 mt-0.5">Tím dojde k plnému odhalení tvé lícní struktury (zygomatic bones).</p>
-                                    </div>
-                                </div>
-                                <div class="flex gap-3 p-3 bg-zinc-900/40 rounded-xl border border-zinc-800">
-                                    <div class="w-8 h-8 rounded-lg bg-violet-500/10 border border-violet-500/20 flex items-center justify-center shrink-0 text-violet-400 font-bold text-xs">2</div>
-                                    <div>
-                                        <h4 class="text-xs font-bold text-white">Kontinuální tvrdý žvýkací trénink</h4>
-                                        <p class="text-[11px] text-zinc-400 mt-0.5">Zapoj masseterové svaly pomocí tvrdé stravy nebo speciálních pomůcek 3x týdně.</p>
-                                    </div>
-                                </div>
-                                <div class="flex gap-3 p-3 bg-zinc-900/40 rounded-xl border border-zinc-800">
-                                    <div class="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0 text-amber-400 font-bold text-xs">3</div>
-                                    <div>
-                                        <h4 class="text-xs font-bold text-white">Oprava držení hlavy (Forward Head Posture)</h4>
-                                        <p class="text-[11px] text-zinc-400 mt-0.5">Prováděj cvik chin-tucks pro narovnání krční páteře a zlepšení vzhledu profilu.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="pt-4 border-t border-zinc-900 text-center text-[11px] text-zinc-500">
-                            Analýzy jsou zpracovávány šifrovaně a lokálně. Vaše soukromí je chráněno.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    document.querySelectorAll(".tab").forEach(tab=>{
 
-        <!-- SECTION 3: ROUTINES PROTOCOLS -->
-        <section id="content-routine" class="tab-content space-y-6 hidden animate-fadeIn">
-            <div class="glass-panel rounded-2xl p-6">
-                <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
-                    <div>
-                        <h2 class="text-xl font-bold font-display text-white flex items-center gap-2">
-                            <i data-lucide="sliders" class="text-violet-400"></i> Looksmaxxing Routines & Daily Protocols
-                        </h2>
-                        <p class="text-xs text-zinc-400 mt-1">Konzistentní provádění denních návyků odděluje průměr od elity.</p>
-                    </div>
-                    <button onclick="addNewTaskPrompt()" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2">
-                        <i data-lucide="plus" class="w-4 h-4 text-violet-400"></i> Přidat Vlastní Protokol
-                    </button>
-                </div>
+        tab.classList.remove("active");
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Task List full -->
-                    <div class="lg:col-span-2 space-y-3" id="full-routine-list">
-                        <!-- JS Generated -->
-                    </div>
+    });
 
-                    <!-- Progress Analytics Card -->
-                    <div class="glass-panel rounded-2xl p-6 bg-gradient-to-b from-zinc-900/40 to-transparent space-y-6">
-                        <div>
-                            <span class="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Aktuální XP Progrese</span>
-                            <h3 class="text-xl font-black text-white mt-1">Tier Status: CHAD</h3>
-                            <div class="w-full bg-zinc-900 h-2.5 rounded-full overflow-hidden mt-3">
-                                <div class="bg-gradient-to-r from-violet-500 to-cyan-400 h-full w-[78%] rounded-full"></div>
-                            </div>
-                            <div class="flex justify-between items-center mt-2 text-xs text-zinc-400">
-                                <span>7,800 XP</span>
-                                <span>10,000 XP do GigaChad</span>
-                            </div>
-                        </div>
+    document.getElementById(id).classList.add("active");
 
-                        <div class="pt-4 border-t border-zinc-900 space-y-3">
-                            <h4 class="text-xs font-bold text-zinc-300 uppercase tracking-wide">Výhody vyšších úrovní</h4>
-                            <ul class="space-y-2 text-xs text-zinc-400">
-                                <li class="flex items-center gap-2 text-zinc-500"><i data-lucide="lock" class="w-3.5 h-3.5"></i> Beta Tier (Základní funkce)</li>
-                                <li class="flex items-center gap-2 text-emerald-400"><i data-lucide="check" class="w-3.5 h-3.5"></i> Chad Tier (Pokročilá AI Analýza)</li>
-                                <li class="flex items-center gap-2"><i data-lucide="sparkles" class="w-3.5 h-3.5 text-violet-400"></i> GigaChad Tier (Custom Mentoring & Alpha-stavy)</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+}
 
-        <!-- SECTION 4: NUTRITION & WATER -->
-        <section id="content-nutrition" class="tab-content space-y-6 hidden animate-fadeIn">
-            <div class="glass-panel rounded-2xl p-6">
-                <div class="max-w-xl mb-6">
-                    <h2 class="text-xl font-bold font-display text-white flex items-center gap-2">
-                        <i data-lucide="droplet" class="text-blue-400"></i> Suplementace & Optimalizace Vody
-                    </h2>
-                    <p class="text-xs text-zinc-400 mt-1">
-                        Mikroživiny a hydratace přímo ovlivňují zadržování vody v obličeji (bloat) a elasticitu kůže.
-                    </p>
-                </div>
+lucide.createIcons();
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Water tracker -->
-                    <div class="glass-panel rounded-2xl p-6 text-center space-y-4">
-                        <h3 class="text-sm font-bold text-zinc-300 uppercase tracking-wide">Denní příjem vody</h3>
-                        <div class="relative w-36 h-36 mx-auto flex flex-col items-center justify-center bg-zinc-950 rounded-full border-4 border-blue-500/20">
-                            <span class="text-2xl font-black font-display text-white" id="water-count">2.5</span>
-                            <span class="text-xs text-zinc-500">z 3.8 Litru</span>
-                        </div>
-                        <div class="flex justify-center gap-2">
-                            <button onclick="addWater(0.25)" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs px-3 py-2 rounded-lg font-semibold text-blue-400 transition">+250ml</button>
-                            <button onclick="addWater(0.5)" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs px-3 py-2 rounded-lg font-semibold text-blue-400 transition">+500ml</button>
-                            <button onclick="resetWater()" class="bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 text-xs px-3 py-2 rounded-lg font-semibold text-zinc-500 transition">Reset</button>
-                        </div>
-                    </div>
+</script>
 
-                    <!-- Supplements grid list -->
-                    <div class="md:col-span-2 glass-panel rounded-2xl p-6">
-                        <h3 class="text-sm font-bold text-zinc-300 uppercase tracking-wide mb-4">Esenciální Supps pro kůži & kosti</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div class="p-3 bg-zinc-900/50 rounded-xl border border-zinc-800 flex justify-between items-center">
-                                <div>
-                                    <span class="text-xs font-bold text-white block">Zinek + Hořčík (ZMA)</span>
-                                    <span class="text-[11px] text-zinc-500">Testosteron & Regenerace kůže</span>
-                                </div>
-                                <input type="checkbox" checked class="w-4 h-4 rounded border-zinc-800 bg-zinc-950 text-blue-500 focus:ring-0">
-                            </div>
-                            <div class="p-3 bg-zinc-900/50 rounded-xl border border-zinc-800 flex justify-between items-center">
-                                <div>
-                                    <span class="text-xs font-bold text-white block">Kolagenové Peptidy (10g)</span>
-                                    <span class="text-[11px] text-zinc-500">Elasticita tkání a plnost pleti</span>
-                                </div>
-                                <input type="checkbox" class="w-4 h-4 rounded border-zinc-800 bg-zinc-950 text-blue-500 focus:ring-0">
-                            </div>
-                            <div class="p-3 bg-zinc-900/50 rounded-xl border border-zinc-800 flex justify-between items-center">
-                                <div>
-                                    <span class="text-xs font-bold text-white block">Vitamin D3 + K2</span>
-                                    <span class="text-[11px] text-zinc-500">Hustota kostí & Čelistní struktura</span>
-                                </div>
-                                <input type="checkbox" checked class="w-4 h-4 rounded border-zinc-800 bg-zinc-950 text-blue-500 focus:ring-0">
-                            </div>
-                            <div class="p-3 bg-zinc-900/50 rounded-xl border border-zinc-800 flex justify-between items-center">
-                                <div>
-                                    <span class="text-xs font-bold text-white block">Omega-3 Mastné kyseliny</span>
-                                    <span class="text-[11px] text-zinc-500">Redukce zánětů a akné</span>
-                                </div>
-                                <input type="checkbox" class="w-4 h-4 rounded border-zinc-800 bg-zinc-950 text-blue-500 focus:ring-0">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 5: LEADERBOARD -->
-        <section id="content-leaderboard" class="tab-content space-y-6 hidden animate-fadeIn">
-            <div class="glass-panel rounded-2xl p-6">
-                <div class="max-w-xl mb-6">
-                    <h2 class="text-xl font-bold font-display text-white flex items-center gap-2">
-                        <i data-lucide="trophy" class="text-amber-400"></i> Globální Morphic Komunitní Žebříček
-                    </h2>
-                    <p class="text-xs text-zinc-400 mt-1">
-                        Srovnej své skóre, disciplínu a konzistentnost s ostatními uživateli z celého světa.
-                    </p>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs border-collapse">
-                        <thead>
-                            <tr class="border-b border-zinc-800 text-zinc-500 uppercase font-bold tracking-wider">
-                                <th class="pb-3 pl-2">Pořadí</th>
-                                <th class="pb-3">Uživatel</th>
-                                <th class="pb-3">Tier Status</th>
-                                <th class="pb-3">Facial Rating</th>
-                                <th class="pb-3 pr-2 text-right">Celkové XP</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-zinc-900/60 font-medium text-zinc-300">
-                            <tr class="bg-amber-500/5">
-                                <td class="py-4 pl-2 font-bold text-amber-400 flex items-center gap-1">1. <i data-lucide="crown" class="w-3.5 h-3.5"></i></td>
-                                <td class="py-4 font-bold text-white">Valerius_Maximus</td>
-                                <td class="py-4"><span class="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-md font-bold">GIGACHAD</span></td>
-                                <td class="py-4 text-cyan-400 font-bold">9.12 / 10</td>
-                                <td class="py-4 pr-2 text-right text-white font-bold">14,950 XP</td>
-                            </tr>
-                            <tr class="bg-zinc-900/20">
-                                <td class="py-4 pl-2 font-bold text-zinc-400">2.</td>
-                                <td class="py-4 font-bold text-white">Aesthetic_Aurelius</td>
-                                <td class="py-4"><span class="text-[10px] bg-violet-500/10 text-violet-400 border border-violet-500/20 px-2 py-0.5 rounded-md font-bold">ELITE CHAD</span></td>
-                                <td class="py-4 text-cyan-400 font-bold">8.78 / 10</td>
-                                <td class="py-4 pr-2 text-right text-white font-bold">12,100 XP</td>
-                            </tr>
-                            <tr class="bg-cyan-500/5 border-y border-cyan-500/20">
-                                <td class="py-4 pl-2 font-bold text-cyan-400">3. (TY)</td>
-                                <td class="py-4 font-bold text-white">Morphic_User_892</td>
-                                <td class="py-4"><span class="text-[10px] bg-violet-500/10 text-violet-400 border border-violet-500/20 px-2 py-0.5 rounded-md font-bold">ELITE CHAD</span></td>
-                                <td class="py-4 text-cyan-400 font-bold">8.45 / 10</td>
-                                <td class="py-4 pr-2 text-right text-cyan-400 font-bold">7,800 XP</td>
-                            </tr>
-                            <tr>
-                                <td class="py-4 pl-2 text-zinc-500">4.</td>
-                                <td class="py-4">JawlineArchitect</td>
-                                <td class="py-4"><span class="text-[10px] bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded-md font-bold">CHAD</span></td>
-                                <td class="py-4 text-zinc-400">8.10 / 10</td>
-                                <td class="py-4 pr-2 text-right">7,420 XP</td>
-                            </tr>
-                            <tr>
-                                <td class="py-4 pl-2 text-zinc-500">5.</td>
-                                <td class="py-4">Phenotype_God</td>
-                                <td class="py-4"><span class="text-[10px] bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded-md font-bold">CHAD</span></td>
-                                <td class="py-4 text-zinc-400">7.95 / 10</td>
-                                <td class="py-4 pr-2 text-right">6,980 XP</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="border-t border-zinc-900 mt-auto py-6 text-center text-xs text-zinc-600 glass-panel">
-        <div>&copy; 2026 MORPHIC Ecosystem. Všechna práva vyhrazena. Engineered for Superiority.</div>
-    </footer>
-
-    <!-- APP SCRIPT LOGIC -->
-    <script>
-        // Initialize Icons
-        lucide.createIcons();
-
-        // ROUTINE DATA MODEL
-        const tasks = [
-            { id: 1, text: "Skincare rutina (Čištění + Hydratace pleti)", done: true, category: "Vzhled" },
-            { id: 2, text: "Gua Sha masáž / Ledování obličeje pro eliminaci otoků", done: false, category: "Vzhled" },
-            { id: 3, text: "Silový trénink (Krční svaly + Mezilopatkové svaly)", done: false, category: "Kostra & Posture" },
-            { id: 4, text: "Ortodontický trénink (Mewing session 45 min)", done: true, category: "Čelist" },
-            { id: 5, text: "Suplementace esenciálních minerálů (D3, K2, Zinek)", done: false, category: "Zdraví" }
-        ];
-
-        // TAB SWITCHING SYSTEM
-        function switchTab(tabId) {
-            // Hide all contents
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.add('hidden');
-            });
-            // Show active content
-            document.getElementById(`content-${tabId}`).classList.remove('hidden');
-
-            // Reset tab button styles
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.className = "tab-btn px-4 py-2 rounded-lg text-xs font-semibold tracking-wide text-zinc-400 hover:text-white transition-all duration-200";
-            });
-            // Set active button style
-            const activeBtn = document.getElementById(`tab-${tabId}`);
-            activeBtn.className = "tab-btn px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all duration-200 bg-cyan-500 text-black shadow-lg shadow-cyan-500/10";
-        }
-
-        // ROUTINE RENDERING
-        function renderRoutines() {
-            const homePreview = document.getElementById('home-routine-preview');
-            const fullList = document.getElementById('full-routine-list');
-            
-            if(homePreview) homePreview.innerHTML = '';
-            if(fullList) fullList.innerHTML = '';
-
-            tasks.forEach(task => {
-                const html = `
-                    <div onclick="toggleTask(${task.id})" class="flex items-center justify-between p-3.5 rounded-xl bg-zinc-900/40 border border-zinc-800/80 hover:border-zinc-700 cursor-pointer transition duration-150">
-                        <div class="flex items-center gap-3">
-                            <div class="w-5 h-5 rounded-md border ${task.done ? 'bg-cyan-500 border-cyan-500' : 'border-zinc-700'} flex items-center justify-center transition-all">
-                                ${task.done ? '<i data-lucide="check" class="w-3 h-3 text-black stroke-[3]"></i>' : ''}
-                            </div>
-                            <span class="text-xs sm:text-sm ${task.done ? 'line-through text-zinc-500' : 'text-zinc-200'}">${task.text}</span>
-                        </div>
-                        <span class="text-[10px] px-2 py-0.5 rounded bg-zinc-800 text-zinc-400 font-bold border border-zinc-700/50">${task.category}</span>
-                    </div>
-                `;
-
-                if(homePreview) homePreview.innerHTML += html;
-                if(fullList) fullList.innerHTML += html;
-            });
-
-            lucide.createIcons();
-        }
-
-        function toggleTask(id) {
-            const task = tasks.find(t => t.id === id);
-            if(task) task.done = !task.done;
-            renderRoutines();
-        }
-
-        function addNewTaskPrompt() {
-            const text = prompt("Zadej název nového protokolu:");
-            if(text && text.trim() !== "") {
-                tasks.push({
-                    id: tasks.length + 1,
-                    text: text,
-                    done: false,
-                    category: "Custom"
-                });
-                renderRoutines();
-            }
-        }
-
-        // FAKE AI FACIAL ANALYSIS SIMULATOR
-        function startScan() {
-            document.getElementById('scan-init').classList.add('hidden');
-            document.getElementById('scan-loading').classList.remove('hidden');
-            
-            const statuses = [
-                "Detekce očních štěrbin (Canthal Tilt)...",
-                "Měření mandibulárního úhlu (Jawline)...",
-                "Výpočet vertikálního trojdílného poměru obličeje...",
-                "Generování finálního reportu..."
-            ];
-
-            let step = 0;
-            const statusInterval = setInterval(() => {
-                if(step < statuses.length) {
-                    document.getElementById('scan-status-text').innerText = statuses[step];
-                    step++;
-                }
-            }, 800);
-
-            setTimeout(() => {
-                clearInterval(statusInterval);
-                document.getElementById('scan-loading').classList.add('hidden');
-                document.getElementById('scan-result').classList.remove('hidden');
-            }, 3500);
-        }
-
-        function resetScan() {
-            document.getElementById('scan-result').classList.add('hidden');
-            document.getElementById('scan-init').classList.remove('hidden');
-        }
-
-        // MEWING TIMER SYSTEM
-        let mewingActive = false;
-        let timerInterval;
-        let timeLeft = 45 * 60;
-
-        function toggleMewingGlobal() {
-            const btn = document.getElementById('home-btn-mew');
-            mewingActive = !mewingActive;
-
-            if(mewingActive) {
-                btn.innerHTML = `<i data-lucide="pause" class="w-3.5 h-3.5 text-black"></i> Pozastavit Session`;
-                btn.className = "w-full bg-cyan-500 text-black font-bold text-xs py-3 rounded-xl transition duration-200 flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20";
-                
-                timerInterval = setInterval(() => {
-                    timeLeft--;
-                    updateTimerDisplays();
-                    if(timeLeft <= 0) {
-                        clearInterval(timerInterval);
-                        alert("Mewing session úspěšně dokončena! +150 XP");
-                    }
-                }, 1000);
-            } else {
-                btn.innerHTML = `<i data-lucide="play" class="w-3.5 h-3.5 text-cyan-400"></i> Spustit Rychlou Session`;
-                btn.className = "w-full bg-zinc-900 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-800/80 text-white font-bold text-xs py-3 rounded-xl transition duration-200 flex items-center justify-center gap-2";
-                clearInterval(timerInterval);
-            }
-            lucide.createIcons();
-        }
-
-        function updateTimerDisplays() {
-            const mins = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-            const secs = (timeLeft % 60).toString().padStart(2, '0');
-            const formatted = `${mins}:${secs}`;
-            
-            const display = document.getElementById('home-timer-display');
-            if(display) display.innerText = formatted;
-        }
-
-        // WATER TRACKER LOGIC
-        let currentWater = 2.5;
-        function addWater(amount) {
-            currentWater = Math.min(3.8, currentWater + amount);
-            document.getElementById('water-count').innerText = currentWater.toFixed(2);
-        }
-        function resetWater() {
-            currentWater = 0;
-            document.getElementById('water-count').innerText = "0.00";
-        }
-
-        // Run On Start
-        renderRoutines();
-    </script>
 </body>
 </html>
-index.html
-Zobrazuje se položka index.html
